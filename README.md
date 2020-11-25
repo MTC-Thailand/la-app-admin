@@ -1,3 +1,6 @@
+# la-app-admin
+Admin system for LA Forum application
+
 # la-qr-scanner
 
 ## Project setup
