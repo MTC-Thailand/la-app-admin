@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "site": "la-forum-scanner",
+    "public": "dist"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}
