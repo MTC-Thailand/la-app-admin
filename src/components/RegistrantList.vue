@@ -31,6 +31,9 @@
               <td>{{ user.licenseId }}</td>
             </tr>
           </table>
+          <div class="buttons is-centered">
+            <a class="button is-info" @click="register(user)">ลงทะเบียน</a>
+          </div>
         </div>
       </div>
     </div>
@@ -38,7 +41,7 @@
 </template>
 
 <script>
-import { users } from '../firebase'
+import {checkins, users} from '../firebase'
 
 export default {
   name: "RegistrantList",
@@ -55,6 +58,8 @@ export default {
       users.where('firstname', '==', this.query).get().then(snapshot=>{
         if (snapshot.docs.length > 0) {
           snapshot.docs.forEach(d=>{
+            let data = d.data()
+            data['id'] = d.id
             self.users.push(d.data())
           })
         } else {
@@ -68,6 +73,15 @@ export default {
             }
           })
         }
+      })
+    },
+    register: function(user) {
+      this.record = ''
+      const self = this
+      let checkedAt = new Date()
+      checkins.add({ checkedAt: checkedAt, number: user.number}).then(()=>{
+        self.record = checkedAt
+        self.$buefy.toast.open({ message: 'แสกนเรียบร้อยแล้ว', type: 'is-success'})
       })
     }
   }

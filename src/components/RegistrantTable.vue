@@ -18,7 +18,7 @@
         {{ props.row.lastname }}
       </b-table-column>
       <b-table-column field="action" label="Action" sortable v-slot="props">
-        <button @click="$router.push({ name: 'UserDetail', params: {userNumber: props.row.number }})">
+        <button class="button is-success" @click="$router.push({ name: 'UserDetail', params: {userNumber: props.row.number }})">
           detail
         </button>
       </b-table-column>

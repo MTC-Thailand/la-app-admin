@@ -65,7 +65,7 @@ export default {
     },
     checkin: function() {
       const self = this
-      let record = {'lineId': self.user.lineId, 'checkedAt': new Date(), 'user': self.user}
+      let record = {'checkedAt': new Date(), 'number': self.user.number}
       checkins.add(record).then(()=>{
         self.checkins = []
         checkins.where('lineId', '==', self.user.lineId).get().then(snapshot=>{
@@ -84,7 +84,7 @@ export default {
           self.user = snapshot.docs[0].data()
           self.userId = snapshot.docs[0].id
           if (self.user.lineId) {
-            checkins.where('lineId', '==', self.user.lineId).get().then(snapshot=>{
+            checkins.where('number', '==', self.user.number).get().then(snapshot=>{
               snapshot.docs.forEach(d=>{
                 self.checkins.push(d.data())
               })
