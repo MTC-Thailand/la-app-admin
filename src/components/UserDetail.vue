@@ -5,41 +5,45 @@
     </h1>
     <table class="table is-fullwidth">
       <tr>
-        <td>Number</td>
+        <td><strong>Number</strong></td>
         <td>{{ user.number }}</td>
       </tr>
       <tr>
-        <td>Name</td>
+        <td><strong>Passcode</strong></td>
+        <td>{{ user.passcode }}</td>
+      </tr>
+      <tr>
+        <td><strong>Name</strong></td>
         <td>{{ user.title }}{{ user.firstname }} {{user.lastname}}</td>
       </tr>
       <tr>
-        <td>Office</td>
+        <td><strong>Office</strong></td>
         <td>{{ user.office }} {{ user.province }}</td>
       </tr>
       <tr>
-        <td>License ID</td>
+        <td><strong>License ID</strong></td>
         <td>{{ user.licenseId }}</td>
-      </tr>
-      <tr>
-        <td>Admin</td>
-        <td><b-switch v-model="user.admin"></b-switch></td>
       </tr>
     </table>
     <div class="buttons is-centered">
-      <button class="button is-light is-rounded" @click="$router.push({ name: 'RegistrantTable'})">Back</button>
-      <button class="button is-light is-rounded is-success" @click="save">Save</button>
+      <button class="button is-success" @click="save">Save</button>
     </div>
     <h1 class="title has-text-info">
       Check In Records
     </h1>
-    <table class="table is-narrow is-fullwidth" v-for="c in checkins" :key="c.checkedAt.toDate().toLocaleString()">
-      <tr>
+    <table class="table is-narrow is-fullwidth">
+      <thead>
+      <th>Method</th>
+      <th>Date & Time</th>
+      </thead>
+      <tr v-for="c in checkins" :key="c.checkedAt.toDate().toLocaleString()">
+        <td>{{ c.method }}</td>
         <td>{{ c.checkedAt.toDate().toLocaleString() }}</td>
       </tr>
     </table>
     <div class="buttons is-centered">
-      <button class="button is-light is-rounded" @click="$router.push({ name: 'RegistrantTable'})">Back</button>
-      <button class="button is-light is-success is-rounded" @click="checkin">Check In</button>
+      <button class="button is-light" @click="$router.push({ name: 'RegistrantTable'})">Back</button>
+      <button class="button is-info" @click="checkin">Check In</button>
     </div>
   </section>
 </template>
@@ -65,10 +69,10 @@ export default {
     },
     checkin: function() {
       const self = this
-      let record = {'checkedAt': new Date(), 'number': self.user.number}
+      let record = {'checkedAt': new Date(), 'number': self.user.number, method: 'manual'}
       checkins.add(record).then(()=>{
         self.checkins = []
-        checkins.where('lineId', '==', self.user.lineId).get().then(snapshot=>{
+        checkins.where('number', '==', self.user.number).get().then(snapshot=>{
           snapshot.docs.forEach(d=>{
             self.checkins.push(d.data())
           })
@@ -83,13 +87,11 @@ export default {
         users.where('number', '==', parseInt(this.$route.params.userNumber)).get().then(snapshot => {
           self.user = snapshot.docs[0].data()
           self.userId = snapshot.docs[0].id
-          if (self.user.lineId) {
-            checkins.where('number', '==', self.user.number).get().then(snapshot=>{
-              snapshot.docs.forEach(d=>{
-                self.checkins.push(d.data())
-              })
+          checkins.where('number', '==', self.user.number).get().then(snapshot=>{
+            snapshot.docs.forEach(d=>{
+              self.checkins.push(d.data())
             })
-          }
+          })
         })
       }
     }

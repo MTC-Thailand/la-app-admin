@@ -59,7 +59,7 @@ export default {
           users.where('lineId', '==', decodedString).get().then(snapshot=>{
             if(snapshot.docs.length > 0) {
               self.user = snapshot.docs[0].data()
-              checkins.add({ lineId: decodedString, checkedAt: checkedAt, user: self.user}).then(()=>{
+              checkins.add({ lineId: decodedString, checkedAt: checkedAt, user: self.user, method: 'QRCode'}).then(()=>{
                 self.record = checkedAt
                 self.$buefy.toast.open({ message: 'แสกนเรียบร้อยแล้ว', type: 'is-success'})
               })

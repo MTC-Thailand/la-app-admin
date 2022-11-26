@@ -1,7 +1,12 @@
 {
   "hosting": {
-    "site": "la-forum-scanner",
-    "public": "dist"
+    "public": "dist",
+    "target": "la-forum-scanner",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   },
   "firestore": {
     "rules": "firestore.rules",
